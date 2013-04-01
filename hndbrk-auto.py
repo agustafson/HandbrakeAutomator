@@ -2,6 +2,7 @@ import os
 import sys
 import commands
 import argparse
+import re
 
 name_chunks_to_remove=['_UK']
 
@@ -10,7 +11,7 @@ env_handbrake_cli = os.getenv('HANDBRAKE_CLI', env_handbrake_home + '/HandbrakeC
 
 parser = argparse.ArgumentParser()
 parser.add_argument("-i", "--input", help="The input source", default="/dev/disk1")
-parser.add_argument("-o", "--output-dir", help="The output directory for the files")
+parser.add_argument("-o", "--output-dir", help="The output directory for the files", default=None)
 parser.add_argument("-Z", "--preset", help="Which preset to use", default="Normal")
 parser.add_argument("-m", "--minimum-minutes", help="Minimum number of minutes for each episode", type=int, default=600)
 parser.add_argument("-x", "--executable", help="Path to executable", default=env_handbrake_cli)
@@ -51,12 +52,14 @@ def get_disk_name(device_name):
 
 find_out=find_episodes()
 disk_name=get_disk_name(args.input)
+series_name=re.sub(r"_S[0-9]+D[0-9]+", "", disk_name).title()
 
-lines = find_out.splitlines()
-titles=[line.replace("+ title ","").replace(":","").strip() for line in lines if line.startswith("+ title")]
-print "Found titles: " + str(titles)
+titles=[line.replace("+ title ","").replace(":","").strip() for line in (find_out.splitlines()) if line.startswith("+ title")]
 
-
-
-print "done"
+print "============================="
+print "Series: " + series_name
+print "Disk: " + disk_name
+print "Titles: " + str(titles)
+print "Complete"
+print "============================="
 
