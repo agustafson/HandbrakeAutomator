@@ -21,16 +21,19 @@ if not os.access(args.executable, os.X_OK):
           " or HANDBRAKE_CLI to specify full path to binary")
     sys.exit(-1)
 
-def find_episodes():
-    find_cmd = "%(executable)s -i %(input)s --min-duration %(minimum_minutes)d -t 0" % (vars(args))
-    print "Executing " + find_cmd
-    find_status, find_out = commands.getstatusoutput(find_cmd)
-    if find_status != 0:
-        print("Attempting to find titles failed:")
-        print(find_out)
+def execute_cmd(cmd):
+    print "Executing " + cmd
+    cmd_status, cmd_out = commands.getstatusoutput(cmd)
+    if cmd_status != 0:
+        print("Failed running %s:"%cmd)
+        print(cmd_out)
         print("Exit")
         sys.exit(-1)
-    return find_out
+    return cmd_out
+
+def find_episodes():
+    find_cmd = "%(executable)s -i %(input)s --min-duration %(minimum_minutes)d -t 0"%(vars(args))
+    return execute_cmd(find_cmd)
 
 find_out=find_episodes()
 
