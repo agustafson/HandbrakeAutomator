@@ -14,22 +14,23 @@ handbrake_cli = os.getenv('HANDBRAKE_CLI', handbrake_home + '/HandbrakeCLI')
 parser = argparse.ArgumentParser()
 parser.add_argument("-i", "--input", help="The input source")
 parser.add_argument("-o", "--output-dir", help="The output directory for the files")
+parser.add_argument("-Z", "--preset", help="Which preset to use", default="Normal")
+parser.add_argument("-m", "--minimum-minutes", help="Minimum number of minutes for each episode", type=int, default=600)
 parser.add_argument("-x", "--executable", help="Path to executable", default=handbrake_cli)
 args = parser.parse_args()
 
 print args
 
 handbrake_cli=args.executable
-input_src = args.input
 
 if not os.access(handbrake_cli, os.X_OK):
     print("Must provide system environment variable HANDBRAKE_HOME to specify home directory of HandbrakeCLI binary,"
           " or HANDBRAKE_CLI to specify full path to binary")
     sys.exit(-1)
 
-find_process_args = [handbrake_cli, " -Z Normal -i /Volumes/ENTERPRISE_S3D1_UK/ -o handbrake_out.m4v --min-duration 1200 -t 0"]
-print "Executing " + find_process_args.__str__()
-find_status, find_out = commands.getstatusoutput(handbrake_cli + " -Z Normal -i /Volumes/ENTERPRISE_S3D1_UK/ -o handbrake_out.m4v --min-duration 1200 -t 0")
+find_cmd = "%s -Z %s -i %s --min-duration %d -t 0"%(handbrake_cli, args.preset, args.input, args.minimum_minutes)
+print "Executing " + find_cmd
+find_status, find_out = commands.getstatusoutput(find_cmd)
 if find_status != 0:
     print("Attempting to find titles failed:")
     print(find_out)
