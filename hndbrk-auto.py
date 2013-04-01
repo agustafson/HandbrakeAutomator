@@ -1,12 +1,7 @@
 import os
-import subprocess
 import sys
-import user
-import io
 import commands
-import time
 import argparse
-#/Applications/HandBrakeCLI -i /Volumes/ENTERPRISE_S3D1_UK/
 
 env_handbrake_home = os.getenv('HANDBRAKE_HOME', '__NO_HANDBRAKE_HOME_SET__')
 env_handbrake_cli = os.getenv('HANDBRAKE_CLI', env_handbrake_home + '/HandbrakeCLI')
@@ -40,6 +35,5 @@ print "status: " + str(find_status)
 print "out: " + find_out
 print "done"
 
-#stdout_readlines = find_out.split('\\n')
 
 
