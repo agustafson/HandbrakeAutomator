@@ -37,9 +37,9 @@ def find_episodes():
     find_cmd = "%(executable)s -i %(input)s --min-duration %(minimum_minutes)d -t 0"%(vars(args))
     return execute_cmd(find_cmd)
 
-def get_base_name(device_name):
-    base_name_cmd = "diskutil info " + device_name
-    diffutil_out = execute_cmd(base_name_cmd)
+def get_disk_name(device_name):
+    disk_name_cmd = "diskutil info " + device_name
+    diffutil_out = execute_cmd(disk_name_cmd)
     volume_names=[line for line in diffutil_out.splitlines() if line.strip(" ").startswith("Volume Name")]
     if len(volume_names) == 0:
         raise RuntimeError("Could not find volume name")
@@ -50,7 +50,7 @@ def get_base_name(device_name):
     return volume_name
 
 find_out=find_episodes()
-base_name=get_base_name(args.input)
+disk_name=get_disk_name(args.input)
 
 lines = find_out.splitlines()
 titles=[line.replace("+ title ","").replace(":","").strip() for line in lines if line.startswith("+ title")]
