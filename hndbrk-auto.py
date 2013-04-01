@@ -9,7 +9,7 @@ env_handbrake_home = os.getenv('HANDBRAKE_HOME', '__NO_HANDBRAKE_HOME_SET__')
 env_handbrake_cli = os.getenv('HANDBRAKE_CLI', env_handbrake_home + '/HandbrakeCLI')
 
 parser = argparse.ArgumentParser()
-parser.add_argument("-i", "--input", help="The input source")
+parser.add_argument("-i", "--input", help="The input source", default="/dev/disk1")
 parser.add_argument("-o", "--output-dir", help="The output directory for the files")
 parser.add_argument("-Z", "--preset", help="Which preset to use", default="Normal")
 parser.add_argument("-m", "--minimum-minutes", help="Minimum number of minutes for each episode", type=int, default=600)
