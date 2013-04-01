@@ -3,6 +3,7 @@ import subprocess
 import sys
 import user
 import io
+import commands
 import time
 import argparse
 #/Applications/HandBrakeCLI -i /Volumes/ENTERPRISE_S3D1_UK/
@@ -28,17 +29,16 @@ if not os.access(handbrake_cli, os.X_OK):
 
 find_process_args = [handbrake_cli, " -Z Normal -i /Volumes/ENTERPRISE_S3D1_UK/ -o handbrake_out.m4v --min-duration 1200 -t 0"]
 print "Executing " + find_process_args.__str__()
-find_process = subprocess.Popen(find_process_args, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-find_out, find_err = find_process.communicate()
-if find_process.returncode != 0:
+find_status, find_out = commands.getstatusoutput(handbrake_cli + " -Z Normal -i /Volumes/ENTERPRISE_S3D1_UK/ -o handbrake_out.m4v --min-duration 1200 -t 0")
+if find_status != 0:
     print("Attempting to find titles failed:")
-    print(find_err)
+    print(find_out)
     print("Exit")
     sys.exit(-1)
 
 print "stuff"
+print "status: " + str(find_status)
 print "out: " + find_out
-print "err: " + find_err
 print "done"
 
 #stdout_readlines = find_out.split('\\n')
