@@ -8,15 +8,15 @@ import time
 import argparse
 #/Applications/HandBrakeCLI -i /Volumes/ENTERPRISE_S3D1_UK/
 
-handbrake_home = os.getenv('HANDBRAKE_HOME', '__NO_HANDBRAKE_HOME_SET__')
-handbrake_cli = os.getenv('HANDBRAKE_CLI', handbrake_home + '/HandbrakeCLI')
+env_handbrake_home = os.getenv('HANDBRAKE_HOME', '__NO_HANDBRAKE_HOME_SET__')
+env_handbrake_cli = os.getenv('HANDBRAKE_CLI', env_handbrake_home + '/HandbrakeCLI')
 
 parser = argparse.ArgumentParser()
 parser.add_argument("-i", "--input", help="The input source")
 parser.add_argument("-o", "--output-dir", help="The output directory for the files")
 parser.add_argument("-Z", "--preset", help="Which preset to use", default="Normal")
 parser.add_argument("-m", "--minimum-minutes", help="Minimum number of minutes for each episode", type=int, default=600)
-parser.add_argument("-x", "--executable", help="Path to executable", default=handbrake_cli)
+parser.add_argument("-x", "--executable", help="Path to executable", default=env_handbrake_cli)
 args = parser.parse_args()
 
 print args
