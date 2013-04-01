@@ -38,5 +38,8 @@ print "stuff"
 print "out: " + find_out
 print "done"
 
+lines = find_out.splitlines()
+titles=[line for line in lines if line.startswith("+ title")]
+print titles
 
 
