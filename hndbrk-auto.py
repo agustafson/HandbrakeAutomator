@@ -21,14 +21,12 @@ args = parser.parse_args()
 
 print args
 
-handbrake_cli=args.executable
-
-if not os.access(handbrake_cli, os.X_OK):
+if not os.access(args.executable, os.X_OK):
     print("Must provide system environment variable HANDBRAKE_HOME to specify home directory of HandbrakeCLI binary,"
           " or HANDBRAKE_CLI to specify full path to binary")
     sys.exit(-1)
 
-find_cmd = "%s -Z %s -i %s --min-duration %d -t 0"%(handbrake_cli, args.preset, args.input, args.minimum_minutes)
+find_cmd = "%(executable)s -Z %(preset)s -i %(input)s --min-duration %(minimum_minutes)d -t 0"%(vars(args))
 print "Executing " + find_cmd
 find_status, find_out = commands.getstatusoutput(find_cmd)
 if find_status != 0:
