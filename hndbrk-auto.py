@@ -22,7 +22,7 @@ if not os.access(args.executable, os.X_OK):
     sys.exit(-1)
 
 def find_episodes():
-    find_cmd = "%(executable)s -Z %(preset)s -i %(input)s --min-duration %(minimum_minutes)d -t 0" % (vars(args))
+    find_cmd = "%(executable)s -i %(input)s --min-duration %(minimum_minutes)d -t 0" % (vars(args))
     print "Executing " + find_cmd
     find_status, find_out = commands.getstatusoutput(find_cmd)
     if find_status != 0:
