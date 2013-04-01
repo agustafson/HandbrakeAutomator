@@ -3,6 +3,8 @@ import sys
 import commands
 import argparse
 
+name_chunks_to_remove=['_UK']
+
 env_handbrake_home = os.getenv('HANDBRAKE_HOME', '__NO_HANDBRAKE_HOME_SET__')
 env_handbrake_cli = os.getenv('HANDBRAKE_CLI', env_handbrake_home + '/HandbrakeCLI')
 
@@ -35,14 +37,26 @@ def find_episodes():
     find_cmd = "%(executable)s -i %(input)s --min-duration %(minimum_minutes)d -t 0"%(vars(args))
     return execute_cmd(find_cmd)
 
-find_out=find_episodes()
+def get_base_name(device_name):
+    base_name_cmd = "diskutil info " + device_name
+    diffutil_out = execute_cmd(base_name_cmd)
+    volume_names=[line for line in diffutil_out.splitlines() if line.strip(" ").startswith("Volume Name")]
+    if len(volume_names) == 0:
+        raise RuntimeError("Could not find volume name")
+    volume_name = volume_names[0].split(":",1)[1].strip()
+    for chunk in name_chunks_to_remove:
+        volume_name = volume_name.replace(chunk,'')
+    print "Found volume name: " + volume_name
+    return volume_name
 
-print "stuff"
-print "out: " + find_out
-print "done"
+find_out=find_episodes()
+base_name=get_base_name(args.input)
 
 lines = find_out.splitlines()
-titles=[line for line in lines if line.startswith("+ title")]
-print titles
+titles=[line.replace("+ title ","").replace(":","").strip() for line in lines if line.startswith("+ title")]
+print "Found titles: " + str(titles)
 
+
+
+print "done"
 
