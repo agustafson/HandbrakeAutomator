@@ -57,7 +57,7 @@ def extract_episode(disk_name, titleNumber):
 
 find_out=find_episodes()
 disk_name=get_disk_name(args.input)
-series_name=re.sub(r"_S[0-9]+D[0-9]+", "", disk_name).title()
+series_name=re.sub(r"_S[0-9]+_?D[0-9]+", "", disk_name).title()
 if args.output_dir is None:
     args.output_dir="~/Movies/" + series_name
 
