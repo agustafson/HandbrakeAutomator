@@ -61,6 +61,11 @@ series_name=re.sub(r"_S[0-9]+_?D[0-9]+", "", disk_name).title()
 if args.output_dir is None:
     args.output_dir="~/Movies/" + series_name
 
+dir = os.path.dirname(args.output_dir)
+if not os.path.exists(dir):
+    print "Creating directory: %s" % dir
+    os.makedirs(dir)
+
 titles=[line.replace("+ title ","").replace(":","").strip() for line in (find_out.splitlines()) if line.startswith("+ title")]
 
 print "============================="
