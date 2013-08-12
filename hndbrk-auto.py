@@ -14,7 +14,8 @@ parser.add_argument("-i", "--input", help="The input source", default="/dev/disk
 parser.add_argument("-o", "--output-dir", help="The output directory for the files", default=None)
 parser.add_argument("-Z", "--preset", help="Which preset to use", default="Normal")
 parser.add_argument("-m", "--minimum-seconds", help="Minimum number of seconds for each episode", type=int, default=600)
-parser.add_argument("-x", "--executable", help="Path to executable", default=env_handbrake_cli)
+parser.add_argument("-e", "--executable", help="Path to executable", default=env_handbrake_cli)
+parser.add_argument("-x", "--extra-parameters", help="Extra parameters", default="")
 args=parser.parse_args()
 
 if not os.access(args.executable, os.X_OK):
@@ -52,7 +53,7 @@ def extract_episode(disk_name, titleNumber):
     output_file=args.output_dir + "/" + disk_name + "E" + titleNumber + ".m4v"
     if os.access(output_file, os.R_OK):
         return "File %s already exists - skipping"%output_file
-    extract_cmd="%s -i %s -o %s -t %s --preset %s"%(args.executable, args.input, output_file, titleNumber, args.preset)
+    extract_cmd="%s -i %s -o %s -t %s --preset %s %(extra_parameters)s"%(args.executable, args.input, output_file, titleNumber, args.preset, args.extra_parameters)
     return execute_cmd(extract_cmd)
 
 find_out=find_episodes()
