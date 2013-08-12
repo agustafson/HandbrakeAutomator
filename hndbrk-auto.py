@@ -13,7 +13,7 @@ parser=argparse.ArgumentParser()
 parser.add_argument("-i", "--input", help="The input source", default="/dev/disk1")
 parser.add_argument("-o", "--output-dir", help="The output directory for the files", default=None)
 parser.add_argument("-Z", "--preset", help="Which preset to use", default="Normal")
-parser.add_argument("-m", "--minimum-minutes", help="Minimum number of minutes for each episode", type=int, default=600)
+parser.add_argument("-m", "--minimum-seconds", help="Minimum number of seconds for each episode", type=int, default=600)
 parser.add_argument("-x", "--executable", help="Path to executable", default=env_handbrake_cli)
 args=parser.parse_args()
 
@@ -33,7 +33,7 @@ def execute_cmd(cmd):
     return cmd_out
 
 def find_episodes():
-    find_cmd="%(executable)s -i %(input)s --min-duration %(minimum_minutes)d -t 0"%(vars(args))
+    find_cmd="%(executable)s -i %(input)s --min-duration %(minimum_seconds)d -t 0"%(vars(args))
     return execute_cmd(find_cmd)
 
 def get_disk_name(device_name):
